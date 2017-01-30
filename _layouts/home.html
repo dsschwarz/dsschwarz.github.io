@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>dsschwarz</title>
+    <link rel="stylesheet" type="text/css" href="/css/default.css" />
+</head>
+
+<body>
+
+<div class="container">
+    <div>
+        <h1 class="title">Projects</h1>
+    </div>
+    <div>
+        {% for project in site.data.projects %}
+        <div  class="project-link">
+            <a href="{{project.href}}">{{project.name}}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+</body>
+</html>

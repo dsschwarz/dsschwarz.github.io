@@ -341,7 +341,7 @@ function timeElapsed() {
 
 var startTime, timer;
 var masterBoardList = [];
-$.getJSON("http://localhost:8000/boards.json").done(function(boardInfo) {
+$.getJSON("boards.json").done(function(boardInfo) {
     if (boardInfo[boardSize]) {
         masterBoardList = boardInfo[boardSize]
     } else {

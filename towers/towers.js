@@ -291,12 +291,67 @@ function initBoard(boardIndex) {
                 if (j === 0 || j === boardSize + 1) {
                     row.append($("<td>").addClass("label"))
                 } else {
-                    row.append($("<td><input></td>").addClass("cell"))
+                    var cell = $("<td></td>").addClass("cell");
+                    $("<input>")
+                        .data("x", j - 1)
+                        .data("y", i - 1)
+                        .appendTo(cell);
+                    row.append(cell);
                 }
             }
         }
         table.append(row)
     }
+
+    table.find("input:not([disabled])").first().select();
+
+    table.find(".cell input").keydown(function (event) {
+        var xDiff = 0, yDiff = 0;
+        if (event.which >= 37 && event.which <= 40) {
+            var $el = $(this);
+            var y = $el.data("y");
+            var x = $el.data('x');
+
+            function move(xDiff, yDiff) {
+                x += xDiff;
+                y += yDiff;
+
+                // check if cell is valid
+                if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
+                    // focus the cell
+                    var input = table.find("input")
+                        .filter(function () { return $(this).data("x") == x})
+                        .filter(function () { return $(this).data("y") == y});
+
+                    if (input.attr("disabled")) {
+                        move(xDiff, yDiff);
+                    } else {
+                        input.select();
+                    }
+                }
+            }
+
+            event.preventDefault();
+            if (event.which == 37) {
+                // move left
+                xDiff = -1;
+            } else if (event.which == 39) {
+                // move right
+                xDiff = 1;
+            } else if (event.which == 40) {
+                // move down
+                yDiff = 1;
+            } else if (event.which == 38) {
+                // move up
+                yDiff = -1;
+            }
+
+            move(xDiff, yDiff);
+        } else if (event.which == 13) {
+            // enter key
+            validate();
+        }
+    });
 
     for (var stringIndex in boardKey) {
         if (boardKey.hasOwnProperty(stringIndex)) {

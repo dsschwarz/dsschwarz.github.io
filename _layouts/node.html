@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{page.title}}</title>
+    <link rel="stylesheet" type="text/css" href="/css/default.css" />
+</head>
+
+<body>
+
+<div class="container">
+    <p>
+		{{ content }}
+	</p>
+    <div>
+        {% for project in page.links %}
+        <div  class="project-link">
+            <a href="{{project.href}}">{{project.name}}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+</body>
+</html>

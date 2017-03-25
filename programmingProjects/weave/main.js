@@ -398,9 +398,8 @@ function initMouseHandling(canvas) {
 	// for moves and mouseups while dragging
 	var handler = {
 		clicked:function(e){
-
-			var pos = $(canvas).offset();
-			var relativeToCanvas =  {x: e.pageX-pos.left, y: e.pageY-pos.top};
+            var scaling = canvas.width/$(canvas).width();
+            var relativeToCanvas =  {x: e.offsetX*scaling, y: e.offsetY*scaling};
 			var _mouseP = {x: relativeToCanvas.x-weave.offsetX, y: relativeToCanvas.y-weave.offsetY};
 			console.log("Click -" + _mouseP.x + " " + _mouseP.y);
 			if (panMode && !dragging) {
@@ -451,8 +450,8 @@ function initMouseHandling(canvas) {
 			return false
 		},
 		moved: function (e) {
-			var pos = $(canvas).offset();
-			var relativeToCanvas =  {x: e.pageX-pos.left, y: e.pageY-pos.top};
+			var scaling = canvas.width/$(canvas).width();
+			var relativeToCanvas =  {x: e.offsetX*scaling, y: e.offsetY*scaling};
 			var _mouseP = {x: relativeToCanvas.x-weave.offsetX, y: relativeToCanvas.y-weave.offsetY};
 			if (dragging) {
 				target.x = _mouseP.x;
@@ -507,7 +506,28 @@ function initMouseHandling(canvas) {
 	})
 }
 
+function zoomIn() {
+    var canvas = $('canvas')[0];
+    canvas.width = canvas.width*1.5;
+    canvas.height = canvas.height*1.5;
+    draw(canvas);
+}
+
+function zoomOut() {
+    var canvas = $('canvas')[0];
+    canvas.width = canvas.width/1.5;
+    canvas.height = canvas.height/1.5;
+    draw(canvas);
+}
+
 $(document).ready(function() {
+	var aspectRatio = 1400/800;
+	var $canvas = $('canvas');
+	var canvas = $canvas[0];
+	canvas.width = 2000;
+	canvas.height = canvas.width/aspectRatio;
+	$canvas.height($canvas.innerWidth()/aspectRatio);
+
 	var n1 = createNode(500, 100);
 	var n2 = createNode(300, 300);
 	var n3 = createNode(500, 300);

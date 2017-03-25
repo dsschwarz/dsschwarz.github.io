@@ -1,0 +1,43 @@
+.interface {
+	display: flex;
+	flex-direction: row;
+}
+
+.controls {
+	padding: 0 10px;
+}
+
+.controls button {
+	height: 80px;
+	background-color: #57b;
+	color: #eee;
+	font-family: fantasy;
+	margin: 0;
+	padding: 10px 0;
+}
+
+.controls .btnMode {
+	width: 200px;
+	font-size: 2em;
+}
+
+.controls .zoomBtn {
+	width: 97px;
+	font-size: 1em;
+}
+
+.controls .active {
+	background-color: #79d;
+}
+
+canvas {
+	border: solid;
+	flex-grow: 1;
+	flex-shrink: 1;
+	min-width: 0;
+}
+
+.description {
+	width: 600px;
+	margin: 0 auto;
+}

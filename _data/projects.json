@@ -1,15 +1,11 @@
 [
   {
-    "name": "towers",
-    "href": "/towers"
+    "name": "programming projects",
+    "href": "/programmingProjects"
   },
   {
-    "name": "weave",
-    "href": "/weave"
-  },
-  {
-    "name": "visual programming tool: wireframes",
-    "href": "/wireframes/visualprogrammingtool"
+    "name": "visual programming tool",
+    "href": "/visualprogrammingtool"
   },
   {
     "name": "wireframes for this site",
@@ -18,5 +14,9 @@
   {
     "name": "axis and allies",
     "href": "/axisandallies"
+  },
+  {
+    "name": "color study",
+    "href": "/color"
   }
 ]

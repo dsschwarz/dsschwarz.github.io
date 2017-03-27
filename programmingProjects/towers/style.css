@@ -1,0 +1,46 @@
+
+
+#gameTable {
+    border-spacing: 0;
+}
+#textOutput {
+    margin: 20px 20px 20px 70px;;
+    width: 40%;
+}
+tr {
+    height: 80px;
+}
+tr:last-child td {
+    border-top: 1px solid black;
+}
+tr:last-child td:last-child, tr:last-child td:first-child {
+    border-top: none;
+    border-left: none;
+}
+tr:first-child td {
+    border-left: none;
+}
+
+td:last-child {
+    border-left: 1px solid black;
+}
+td.cell {
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+}
+td {
+    text-align: center;
+    width: 80px;
+}
+input {
+    width: 40px;
+}
+
+.top-level-div {
+    display: flex;
+}
+
+button {
+    padding: 5px;
+    margin: 5px;
+}

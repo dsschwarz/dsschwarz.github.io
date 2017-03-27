@@ -23,6 +23,10 @@ Light Source Placement
 <p>
 The light could either come from the center of the room, simulating light coming from the player character, or from the edges, simulating torches in the walls. This decision was pretty simple. It’s completely ridiculous to have lit torches on the walls. It isn’t reasonable to expect some temple janitor to maintain several corridors worth of torches, ready for explorers to come by. The explorers themselves wouldn’t have enough torches to leave a few on the walls of every room they pass through. More game mechanics reasons, it also makes sense to put the light source in the center. The shadows produced by the light would be more clear, and arrayed against the walls of the room around the edge. This will also help highlight either important aspects of the room, or just highlight cool pieces of artwork and theme.
 </p>
+<div style="display: flex;justify-content: center;">
+    <img src="/images/center.jpg" height="200px" width="200px" style="margin-right: 20px;" >
+    <img src="/images/edges.jpg" height="200px" width="200px">
+</div>
 
 <h3>
 Shadows
@@ -33,4 +37,5 @@ Shadows play an important role in converting the 2D tiles into 3D rooms. The gam
 <p>
 One problem I considered was shadows blending into each other, or losing clarity due to a mix of shadows caused by objects vs shadows added for theme (dark doorways, recesses in walls, pillars, etc). Inspired by the artwork in Serial Experiments Lain, I chose to go with psychadelic purple patterned shadows. This adds more variety to the color pallette, and the strangeness will help with both the atmosphere of tension, and the splash of color will help keep the game feeling light, rather than oppressive. The purple shadows will be used only for objects, to highlight them. Doorways and other less important shadows will use the standard total black. This will resolve the problem with clarity.
 </p>
+<img src="/images/chest.jpg" height="200px" width="200px" style="display: block; margin: 0 auto;">
 </div>

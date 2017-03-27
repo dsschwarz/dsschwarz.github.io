@@ -47,15 +47,19 @@ class ConnectionHandler {
         if (this.selectedInputBlock && this.selectedOutput && this.selectedInputIndex != null) {
             if (this.selectedInputBlock.getModule() != this.selectedOutput.getModule()) {
                 console.error("Input and output belong to different modules");
-                return;
+            } else {
+                var module = this.selectedOutput.getModule();
+                if (module.getConnection(this.selectedOutput, this.selectedInputBlock, this.selectedInputIndex)) {
+                    console.warn("Connection already exists");
+                } else {
+                    // we're good to go
+                    module
+                        .createConnection(this.selectedOutput, this.selectedInputBlock, this.selectedInputIndex);
+
+                }
+                this.reset();
+                renderer.render();
             }
-
-            // we're good to go
-            this.selectedOutput.getModule()
-                .createConnection(this.selectedOutput, this.selectedInputBlock, this.selectedInputIndex);
-
-            this.reset();
-            renderer.render();
         }
     }
 }

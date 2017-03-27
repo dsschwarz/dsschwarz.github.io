@@ -28,3 +28,7 @@ html {
 a {
   text-decoration: none;
 }
+
+.project-container {
+	height: 100%;
+}

@@ -1,5 +1,5 @@
 var DEFAULT_WIDTH = 100;
-var DEFAULT_HEIGHT = 100;
+var DEFAULT_HEIGHT = 80;
 var IO_LINE_LENGTH = 5;
 
 var nextId = (function () {
@@ -17,7 +17,7 @@ class BlockBlueprint {
 
         this.inputs = [];
 
-        this.output = Type.createEmpty();
+        this.output = Type.untyped();
 
         // contents is either javascript text, or a Module
         this.contents = "";
@@ -35,8 +35,7 @@ class BlockBlueprint {
 class Input {
     constructor(name) {
         this.name = name;
-        this.type = Type.createEmpty();
-        this.isLazy = true;
+        this.type = Type.untyped();
     }
 }
 
@@ -48,8 +47,8 @@ class Type {
     /**
      * @returns {Type}
      */
-    static createEmpty() {
-        return new Type("");
+    static untyped() {
+        return new Type("Untyped"); // reserved name, todo: add checks elsewhere
     }
 }
 
@@ -116,6 +115,12 @@ class Block {
         }
     }
 
+    createInput() {
+        var inputs = this.getInputs();
+        var newInput = new Input("input" + (inputs.length + 1));
+        this.addInput(newInput);
+    }
+
     addInput(input) {
         var blueprint = this._getBlueprint();
         blueprint.inputs.push(input);
@@ -123,6 +128,18 @@ class Block {
 
     getInputs() {
         return this._getBlueprint().inputs;
+    }
+
+    getOutput() {
+        return this._getBlueprint().output;
+    }
+
+    getContents() {
+        return this._getBlueprint().contents;
+    }
+
+    setContents(newValue) {
+        return this._getBlueprint().contents = newValue;
     }
 
     _getBlueprint() {
@@ -179,9 +196,43 @@ class Module {
         }
     }
 
+    getConnection(fromBlock, toBlock, inputIndex) {
+        return _.findWhere(this.connections, {
+            fromBlockId: fromBlock.id,
+            toBlockId: toBlock.id,
+            inputIndex: inputIndex
+        });
+    }
+
+    getConnectionFromId(fromBlockId) {
+        return _.findWhere(this.connections, {
+            fromBlockId: fromBlockId
+        });
+    }
+
+    getConnectionToId(toBlockId, inputIndex) {
+        return _.findWhere(this.connections, {
+            toBlockId: toBlockId,
+            inputIndex: inputIndex
+        });
+    }
+
     createConnection(fromBlock, toBlock, inputIndex) {
+        // if there's already an existing connection to this input, remove it
+        var matchingConnections = _.where(this.connections, {
+            toBlockId: toBlock.id,
+            inputIndex: inputIndex
+        });
+        if (matchingConnections.length > 0) {
+            this.removeConnections(matchingConnections);
+        }
+
         var connection = new Connection(fromBlock.id, toBlock.id, inputIndex);
         this.connections.push(connection);
+    }
+
+    removeConnections(connections) {
+        this.connections = _.difference(this.connections, connections);
     }
 }
 

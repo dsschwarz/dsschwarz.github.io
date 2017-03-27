@@ -19,15 +19,23 @@ class Renderer {
             that.renderModeSpecific();
         });
 
-        this.selectedBlock = null;
-
         $("#placement-btn").on("click", function () {
             that.setMode(Modes.Placement)
         });
 
         $("#connection-btn").on("click", function () {
             that.setMode(Modes.Connection)
-        })
+        });
+
+        $("#run-btn").on("click", function () {
+            var evaluator = new Evaluator(that.program);
+            evaluator.run();
+        });
+
+        this.sidePanel = createSidePanelVM();
+        this.currentlySelectedBlockId = null;
+
+        ko.applyBindings(this.sidePanel, $(".side-panel")[0]);
     }
 
     setMode(mode) {
@@ -47,7 +55,6 @@ class Renderer {
 
     // render relies on the globally available program
     render() {
-        this.updateSidePanel();
         this.renderModule(this.program.topLevelModule, this.container);
 
         this.renderModeSpecific();
@@ -56,24 +63,9 @@ class Renderer {
 
     // update the side panel with the info for a given block
     updateCurrentlySelectedBlock(newBlock) {
-        this.selectedBlock = newBlock;
-
-        var $container = $(".side-panel").find(".current-block-info-area");
-        $container.find(".name").val(newBlock.name);
-        var blueprint = $container.find(".blueprint");
-        // update link to blueprint
-
-        // name
-        // inputs
-        // outputs
-        // linked (aka hidden, singular blueprint or shared public blueprint)
-        
-
-
-    }
-
-    updateSidePanel() {
-
+        this.currentlySelectedBlockId = newBlock.id;
+        this.sidePanel.setSelectedBlock(newBlock);
+        this.render();
     }
 
     renderModeSpecific() {
@@ -141,7 +133,9 @@ class Renderer {
                 if (renderer.mode == Modes.Placement) {
                     var block = new GhostBlock(d3.event.offsetX, d3.event.offsetY);
                     // TODO confirm offset is correct for nested modules
-                    module.addBlock(Block.create(block.x, block.y));
+                    var newBlock = Block.create(block.x, block.y);
+                    module.addBlock(newBlock);
+                    renderer.updateCurrentlySelectedBlock(newBlock);
                     renderer.render();
                 }
             });
@@ -212,6 +206,7 @@ class Renderer {
             .on("click", function (inputData) {
                 if (renderer.mode == Modes.Connection) {
                     renderer.connectionHandler.connectToInput(inputData.block, inputData.index);
+                    d3.event.stopPropagation();
                 }
             });
 
@@ -244,14 +239,32 @@ class Renderer {
     }
 
     renderBasicBlock(blockElements) {
+        var renderer = this;
+        var drag = d3.drag();
+        drag.on("drag", function (data) {
+            data.x = d3.event.x;
+            data.y = d3.event.y;
+
+            renderer.render();
+        });
+
         var newBlocks = blockElements.enter()
             .append("g")
-            .classed("code-block", true);
+            .classed("code-block", true)
+            .on("click", function (data) {
+                renderer.updateCurrentlySelectedBlock(data);
+            })
+            .call(drag);
 
         newBlocks.append("rect")
             .classed("background", true);
 
+        newBlocks.append("text")
+            .classed("block-name-label", true)
+            .attr("text-anchor", "middle");
+
         var allBlocks = blockElements.merge(newBlocks)
+            .classed("selected", data => data.id == renderer.currentlySelectedBlockId)
             .attr("transform", data => _translate(data.x, data.y) );
 
         allBlocks.selectAll(".background")
@@ -259,6 +272,11 @@ class Renderer {
             .attr("y", 0)
             .attr("width", data => data.width)
             .attr("height", data => data.height);
+
+        allBlocks.selectAll(".block-name-label")
+            .attr("x", data => data.width/2)
+            .attr("y", data => data.height/2)
+            .text(data => data.name);
 
         blockElements.exit().remove();
 

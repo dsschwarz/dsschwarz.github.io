@@ -54,6 +54,12 @@ title: Visual Programming Tool
                 </div>
             </div>
             <!-- /ko -->
+            <div>
+                <h3 class="subsection-title">Program Output</h3>
+                <div class="messages" data-bind="foreach: messages">
+                    <span class="message" data-bind="css: messageType, text: message"></span><br>
+                </div>
+            </div>
         </div>
     </div>
 </div>

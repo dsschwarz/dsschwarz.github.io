@@ -8,6 +8,14 @@ createSidePanelVM = function (renderer) {
     viewModel.output = ko.observable(null); // Type
     viewModel.contents = ko.observable(""); // Type
     viewModel.showBlockInfo = ko.observable(false);
+    viewModel.messages = ko.observableArray([]);
+
+    renderer.reporter.subscribe(function () {
+        viewModel.messages(renderer.reporter.messages);
+
+        var el = $(".messages")[0];
+        el.scrollTop = el.scrollHeight;
+    });
 
     viewModel.setSelectedBlock = function (block) {
         selectedBlock(block);
@@ -27,6 +35,7 @@ createSidePanelVM = function (renderer) {
         viewModel.blockName(block.name);
         subscriptions.push(viewModel.blockName.subscribe((newValue) => {
             block.setName(newValue);
+            _updateView();
         }));
 
         viewModel.inputs(block.getInputs().map(function (input) {
@@ -54,12 +63,17 @@ createSidePanelVM = function (renderer) {
     viewModel.addInput = function () {
         selectedBlock().createInput();
         updateSidePanel();
+        _updateView();
     };
 
     var _shouldShowBlockInfo = function () {
         if (selectedBlock()) {
             return true;
         }
+    };
+
+    var _updateView = function () {
+        renderer.render();
     };
 
     return viewModel;

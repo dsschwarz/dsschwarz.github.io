@@ -4,8 +4,8 @@ title: Visual Programming Tool
 links: [
 	{ name: "personas", href: "personas"},
 	{ name: "requirements", href: "requirements"},
-	{ name: "hierarchical task analysis", href: "personas"},
-	{ name: "wireframes", href: "wireframes"}
+    { name: "wireframes", href: "wireframes"},
+    { name: "prototype", href: "prototype"}
 	]
 ---
 

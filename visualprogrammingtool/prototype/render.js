@@ -13,6 +13,7 @@ class Renderer {
         this.lastMousePosition = {x: 0, y: 0};
         this.container = d3.select("svg");
         this.connectionHandler = new ConnectionHandler();
+        this.reporter = new Reporter();
         this.container.on("mousemove", function () {
             that.lastMousePosition.x = d3.event.offsetX;
             that.lastMousePosition.y = d3.event.offsetY;
@@ -28,11 +29,12 @@ class Renderer {
         });
 
         $("#run-btn").on("click", function () {
-            var evaluator = new Evaluator(that.program);
+            var evaluator = new Evaluator(that.program, that.reporter);
             evaluator.run();
         });
 
-        this.sidePanel = createSidePanelVM();
+
+        this.sidePanel = createSidePanelVM(this);
         this.currentlySelectedBlockId = null;
 
         ko.applyBindings(this.sidePanel, $(".side-panel")[0]);
@@ -261,7 +263,8 @@ class Renderer {
 
         newBlocks.append("text")
             .classed("block-name-label", true)
-            .attr("text-anchor", "middle");
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle");
 
         var allBlocks = blockElements.merge(newBlocks)
             .classed("selected", data => data.id == renderer.currentlySelectedBlockId)

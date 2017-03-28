@@ -4,7 +4,8 @@ title: Axis and Allies
 links: [
 	{ name: "user testing", href: "usertesting"},
 	{ name: "moodboard", href: "moodboard"},
-	{ name: "animation", href: "animation"}
+	{ name: "animation", href: "animation"},
+	{ name: "prototype", href: "http://159.203.17.39:8888/lobby"}
 	]
 ---
 

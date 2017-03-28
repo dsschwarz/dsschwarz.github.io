@@ -19,3 +19,6 @@ programming. It forces programmers away from an object-oriented approach. Instea
 
 The tool is turing complete. Any program can be designed in it. However, it is not intended
 to support larger, complex programs. It's more of a 'programmer's playground'.
+
+A small prototype has been implemented to demonstrate the tool. It has the minimal amount of functionality
+required to allow the user to create and run simple programs.
